@@ -1,15 +1,29 @@
+use std::{marker::PhantomData, str::FromStr};
+
 pub mod prelude {
-    pub use crate::Template;
+    pub use crate::{StringTemplate, Template};
 }
 
-pub struct Template(String);
+pub struct StringTemplate;
 
-impl Template {
-    pub fn from_str(s: impl AsRef<str>) -> Result<Template, ()> {
-        Ok(Template(s.as_ref().into()))
+pub struct Template<T> {
+    s: String,
+    _t: PhantomData<T>,
+}
+
+impl<T> FromStr for Template<T> {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Template {
+            s: s.into(),
+            _t: PhantomData,
+        })
     }
+}
 
-    pub fn render<T>(&self) -> String {
-        self.0.clone()
+impl<T> Template<T> {
+    pub fn render(&self) -> String {
+        self.s.clone()
     }
 }

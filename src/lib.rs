@@ -71,7 +71,7 @@ pub trait FromTokens {
 
 pub struct Template<T> {
     raw_template: String,
-    t: OnceCell<T>,
+    renderer: OnceCell<T>,
 }
 
 impl<T> FromStr for Template<T>
@@ -84,7 +84,7 @@ where
         let raw_template = String::from(template);
         Ok(Template {
             raw_template,
-            t: OnceCell::new(),
+            renderer: OnceCell::new(),
         })
     }
 }
@@ -97,7 +97,7 @@ pub trait Renderable {
 
 impl<T: Renderable + FromTokens> Template<T> {
     pub fn renderer(&self) -> &T {
-        self.t.get_or_init(|| {
+        self.renderer.get_or_init(|| {
             let raw = self.raw_template.as_str();
             T::from_tokens(Tokens {
                 raw,

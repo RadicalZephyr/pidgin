@@ -20,7 +20,7 @@ pub trait FromTokens {
 }
 
 pub struct Template<T: FromTokens> {
-    s: String,
+    raw_template: String,
     t: T,
 }
 
@@ -30,9 +30,9 @@ where
 {
     type Err = ();
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(template: &str) -> Result<Self, Self::Err> {
         Ok(Template {
-            s: s.into(),
+            raw_template: template.into(),
             t: T::from_tokens(TemplateTokenStream),
         })
     }
@@ -44,6 +44,6 @@ impl<T: FromTokens> Template<T> {
     }
 
     pub fn render(&self) -> String {
-        self.s.clone()
+        self.raw_template.clone()
     }
 }

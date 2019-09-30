@@ -1,4 +1,4 @@
-use pidgin::{prelude::*, FromTokens, Token, Tokens};
+use pidgin::{prelude::*, Token, Tokens};
 
 pub struct TestTemplate {
     literals: Vec<String>,
@@ -9,6 +9,14 @@ impl FromTokens for TestTemplate {
         TestTemplate {
             literals: tokens.filter_map(Token::into_literal).collect(),
         }
+    }
+}
+
+impl Renderable for TestTemplate {
+    type Result = ();
+
+    fn render(&self) -> Self::Result {
+        ()
     }
 }
 

@@ -1,8 +1,14 @@
-use pidgin::prelude::*;
+use pidgin::{prelude::*, FromTokens, TemplateTokenStream};
 
 #[derive(Default)]
 pub struct TestTemplate {
     literals: Vec<String>,
+}
+
+impl FromTokens for TestTemplate {
+    fn from_tokens(_tokens: TemplateTokenStream) -> Self {
+        TestTemplate::default()
+    }
 }
 
 impl TestTemplate {

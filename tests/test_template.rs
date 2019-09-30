@@ -44,5 +44,8 @@ mod tests {
         let template: Template<TestTemplate> = "Hello".parse().unwrap();
         let test_template = template.renderer();
         assert_eq!(test_template.literals().nth(0), Some("Hello".into()));
+        let template: Template<TestTemplate> = "World".parse().unwrap();
+        let test_template = template.renderer();
+        assert_eq!(test_template.literals().nth(0), Some("World".into()));
     }
 }

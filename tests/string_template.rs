@@ -4,7 +4,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn string_template_literal() {
+    fn simple_literal() {
         let template: Template<StringTemplate> = "Hello".parse().unwrap();
         assert_eq!(template.render(), "Hello");
         let template: Template<StringTemplate> = "World".parse().unwrap();

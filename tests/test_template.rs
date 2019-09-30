@@ -36,9 +36,13 @@ impl Iterator for Literals {
     }
 }
 
-#[test]
-fn test_simple_literal() {
-    let template: Template<TestTemplate> = "Hello".parse().unwrap();
-    let test_template = template.renderer();
-    assert_eq!(test_template.literals().nth(0), Some("Hello".into()));
+mod tests {
+    use super::*;
+
+    #[test]
+    fn simple_literal() {
+        let template: Template<TestTemplate> = "Hello".parse().unwrap();
+        let test_template = template.renderer();
+        assert_eq!(test_template.literals().nth(0), Some("Hello".into()));
+    }
 }

@@ -5,18 +5,38 @@ pub mod prelude {
 }
 
 #[derive(Default)]
-pub struct StringTemplate;
+pub struct StringTemplate(Vec<Token>);
 
 impl FromTokens for StringTemplate {
-    fn from_tokens(_tokens: TemplateTokenStream) -> Self {
-        StringTemplate
+    fn from_tokens(tokens: Tokens) -> Self {
+        StringTemplate(tokens.collect())
     }
 }
 
-pub struct TemplateTokenStream;
+pub enum Token {
+    Literal(String),
+}
+
+impl Token {
+    pub fn into_literal(self) -> Option<String> {
+        match self {
+            Token::Literal(s) => Some(s),
+        }
+    }
+}
+
+pub struct Tokens;
+
+impl Iterator for Tokens {
+    type Item = Token;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        None
+    }
+}
 
 pub trait FromTokens {
-    fn from_tokens(tokens: TemplateTokenStream) -> Self;
+    fn from_tokens(tokens: Tokens) -> Self;
 }
 
 pub struct Template<T: FromTokens> {
@@ -33,7 +53,7 @@ where
     fn from_str(template: &str) -> Result<Self, Self::Err> {
         Ok(Template {
             raw_template: template.into(),
-            t: T::from_tokens(TemplateTokenStream),
+            t: T::from_tokens(Tokens),
         })
     }
 }

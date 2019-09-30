@@ -1,13 +1,14 @@
-use pidgin::{prelude::*, FromTokens, TemplateTokenStream};
+use pidgin::{prelude::*, FromTokens, Token, Tokens};
 
-#[derive(Default)]
 pub struct TestTemplate {
     literals: Vec<String>,
 }
 
 impl FromTokens for TestTemplate {
-    fn from_tokens(_tokens: TemplateTokenStream) -> Self {
-        TestTemplate::default()
+    fn from_tokens(tokens: Tokens) -> Self {
+        TestTemplate {
+            literals: tokens.filter_map(Token::into_literal).collect(),
+        }
     }
 }
 
